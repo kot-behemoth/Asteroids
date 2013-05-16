@@ -3,7 +3,7 @@ var Player = function(startX, startZ, scene) {
 		z = startZ,
 		rotation = 0,
 		speed = 0,
-		rotationSpeed = 2,
+		rotationSpeed = 3,
 		dSpeed = 0.5,
 		MAX_SPEED = 15;
 
@@ -27,11 +27,14 @@ var Player = function(startX, startZ, scene) {
 			rotation -= rotationSpeed * delta;
 		}
 
+		// Always slow down
+		speed -= dSpeed * 0.35;
+
 		// Clamp speed
 		if(speed > MAX_SPEED) {
 			speed = MAX_SPEED;
-		} else if(speed < -MAX_SPEED) {
-			speed = -MAX_SPEED;
+		} else if(speed <= 0) {
+			speed = 0;
 		}
 
 		// Rotate
