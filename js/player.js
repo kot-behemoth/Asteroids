@@ -1,11 +1,13 @@
-var Player = function(startX, startZ, scene) {
+var Player = function(startX, startZ, scene) { 
 	var x = startX,
 		z = startZ,
 		rotation = 0,
 		speed = 0,
 		rotationSpeed = 3,
-		dSpeed = 0.5,
-		MAX_SPEED = 15;
+		dSpeed = 0.75,
+		MAX_SPEED = 15,
+
+		lastShot = 0,
 
 		geometry = new THREE.CubeGeometry( 2, 2, 2 ),
 		material = new THREE.MeshLambertMaterial( { color: 0xff00ff, wireframe: false } ),
@@ -14,7 +16,7 @@ var Player = function(startX, startZ, scene) {
 	geometry.useQuaternion = true;
 	scene.add( mesh );
 
-	var update = function(keys, delta) {
+	var update = function(keys, bullets, delta) {
 		if(keys.up) {
 			speed += dSpeed;
 		} else if (keys.down) {
@@ -25,6 +27,11 @@ var Player = function(startX, startZ, scene) {
 			rotation += rotationSpeed * delta;
 		} else if (keys.right) {
 			rotation -= rotationSpeed * delta;
+		}
+
+		if(keys.space && Date.now() > lastShot + 700) {
+			shoot(bullets);
+			lastShot = Date.now();
 		}
 
 		// Always slow down
@@ -44,9 +51,23 @@ var Player = function(startX, startZ, scene) {
 		mesh.translateX(speed * delta);
 	};
 
+	var sphereMaterial = new THREE.MeshBasicMaterial( { color: 0x333333 } );
+	var sphereGeometry = new THREE.SphereGeometry(0.2, 6, 6);
+
+	var shoot = function(bullets) {
+		var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+		sphere.position.set(mesh.position.x, 0, mesh.position.z);
+		sphere.rotation.copy(mesh.rotation);
+		sphere.translateX(1);
+		sphere.life = 100;
+		scene.add(sphere);
+		bullets.push(sphere);
+	}
+
 	return {
 		update: update,
-		draw: draw
+		draw: draw,
+		shoot: shoot
 	};
 
 };

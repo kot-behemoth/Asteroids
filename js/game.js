@@ -2,7 +2,8 @@
 	GAME VARIABLES
 */
 var camera, scene, renderer, canvasWidth, canvasHeight,
-	player, keys;
+	player, keys,
+	bullets;
 
 
 /*******************************************************
@@ -36,14 +37,15 @@ function init() {
 	// create a point light
 	var pointLight =
 		new THREE.PointLight(0xFFFFFF);
-
 	// set its position
 	pointLight.position.x = 5;
 	pointLight.position.y = 50;
 	pointLight.position.z = 1;
-
 	// add to the scene
 	scene.add(pointLight);
+
+	// create the bullets array
+	bullets = [];
 
 	// Add the canvas to the page
 	document.body.appendChild( renderer.domElement );
@@ -118,9 +120,27 @@ function animate() {
 }
 
 function update(delta) {
-	player.update(keys, delta);
+	updateBullets(delta);
+	player.update(keys, bullets, delta);
 }
 
 function draw() {
 	renderer.render( scene, camera );
+}
+
+function updateBullets(delta) {
+	var bulletSpeed = 15;
+
+	for (var i = bullets.length - 1; i >= 0; i--) {
+		var b = bullets[i], p = b.position;
+
+		// update position
+		b.translateX(bulletSpeed * delta);
+
+		// decrease life
+		b.life--;
+		if(b.life <= 0) {
+			scene.remove(b);
+		}
+	};
 }
