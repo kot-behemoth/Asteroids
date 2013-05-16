@@ -116,7 +116,6 @@ function animate() {
 
 	// three.js includes requestAnimationFrame shim
 	requestAnimationFrame( animate );
-
 }
 
 function update(delta) {
@@ -129,18 +128,15 @@ function draw() {
 }
 
 function updateBullets(delta) {
-	var bulletSpeed = 15;
-
 	for (var i = bullets.length - 1; i >= 0; i--) {
-		var b = bullets[i], p = b.position;
+		var b = bullets[i], p = b.model.position;
 
-		// update position
-		b.translateX(bulletSpeed * delta);
+		b.update(delta);
 
-		// decrease life
-		b.life--;
-		if(b.life <= 0) {
-			scene.remove(b);
+		if(b.isDead()) {
+			scene.remove( b.model );
+			bullets.splice(i, 1);
+			// continue;
 		}
-	};
+	}
 }

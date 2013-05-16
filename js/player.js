@@ -1,9 +1,9 @@
-var Player = function(startX, startZ, scene) { 
+function Player(startX, startZ, scene) { 
 	var x = startX,
 		z = startZ,
 		rotation = 0,
 		speed = 0,
-		rotationSpeed = 3,
+		rotationSpeed = 2,
 		dSpeed = 0.75,
 		MAX_SPEED = 15,
 
@@ -31,7 +31,6 @@ var Player = function(startX, startZ, scene) {
 
 		if(keys.space && Date.now() > lastShot + 700) {
 			shoot(bullets);
-			lastShot = Date.now();
 		}
 
 		// Always slow down
@@ -51,17 +50,13 @@ var Player = function(startX, startZ, scene) {
 		mesh.translateX(speed * delta);
 	};
 
-	var sphereMaterial = new THREE.MeshBasicMaterial( { color: 0x333333 } );
-	var sphereGeometry = new THREE.SphereGeometry(0.2, 6, 6);
-
 	var shoot = function(bullets) {
-		var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-		sphere.position.set(mesh.position.x, 0, mesh.position.z);
-		sphere.rotation.copy(mesh.rotation);
-		sphere.translateX(1);
-		sphere.life = 100;
-		scene.add(sphere);
-		bullets.push(sphere);
+		var bullet = new Bullet(mesh.position, mesh.rotation, scene);
+
+		scene.add(bullet.model);
+		bullets.push(bullet);
+
+		lastShot = Date.now();
 	}
 
 	return {
