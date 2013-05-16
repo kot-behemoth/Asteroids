@@ -4,7 +4,7 @@ var Player = function(startX, startY, scene) {
 		moveAmount = 2,
 
 		geometry = new THREE.CubeGeometry( 2, 2, 2 ),
-		material = new THREE.MeshBasicMaterial( { color: 0xff00ff, wireframe: false } ),
+		material = new THREE.MeshLambertMaterial( { color: 0xff00ff, wireframe: false } ),
 		mesh = new THREE.Mesh( geometry, material );
 
 	scene.add( mesh );

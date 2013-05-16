@@ -20,7 +20,7 @@ function init() {
 
 	// Create the camera
 	camera = new THREE.PerspectiveCamera( 45, canvasWidth / canvasHeight, 1, 10000 );
-	camera.position.y = 10;
+	camera.position.y = 50;
 	camera.position.z = 0.1;
 	camera.lookAt( scene.position );
 	scene.add(camera);
@@ -32,6 +32,19 @@ function init() {
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize( canvasWidth, canvasHeight );
 	renderer.setClearColor(0xffffff, 1);
+
+	// 
+	// create a point light
+	var pointLight =
+		new THREE.PointLight(0xFFFFFF);
+
+	// set its position
+	pointLight.position.x = 5;
+	pointLight.position.y = 50;
+	pointLight.position.z = 1;
+
+	// add to the scene
+	scene.add(pointLight);
 
 	// Add the canvas to the page
 	document.body.appendChild( renderer.domElement );
@@ -87,6 +100,7 @@ function onResize(event) {
 
 	// Update camera's aspect ratio
 	camera.aspect = canvasWidth / canvasHeight;
+	camera.updateProjectionMatrix();
 }
 
 /*******************************************************
