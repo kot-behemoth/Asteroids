@@ -1,29 +1,44 @@
-var Player = function(startX, startY, scene) {
+var Player = function(startX, startZ, scene) {
 	var x = startX,
-		y = startY;
-		moveAmount = 2,
+		z = startZ,
+		rotation = 0,
+		speed = 0,
+		rotationSpeed = 2,
+		dSpeed = 0.5,
+		MAX_SPEED = 15;
 
 		geometry = new THREE.CubeGeometry( 2, 2, 2 ),
 		material = new THREE.MeshLambertMaterial( { color: 0xff00ff, wireframe: false } ),
 		mesh = new THREE.Mesh( geometry, material );
 
+	geometry.useQuaternion = true;
 	scene.add( mesh );
 
 	var update = function(keys, delta) {
 		if(keys.up) {
-			mesh.position.z -= moveAmount * delta;
+			speed += dSpeed;
 		} else if (keys.down) {
-			mesh.position.z += moveAmount * delta;
+			speed -= dSpeed;
 		}
 
 		if(keys.left) {
-			mesh.position.x -= moveAmount * delta;
+			rotation += rotationSpeed * delta;
 		} else if (keys.right) {
-			mesh.position.x += moveAmount * delta;
+			rotation -= rotationSpeed * delta;
 		}
 
-		mesh.rotation.x += 0.01;
-		mesh.rotation.y += 0.02;
+		// Clamp speed
+		if(speed > MAX_SPEED) {
+			speed = MAX_SPEED;
+		} else if(speed < -MAX_SPEED) {
+			speed = -MAX_SPEED;
+		}
+
+		// Rotate
+		mesh.rotation.y = rotation;
+
+		// Move
+		mesh.translateX(speed * delta);
 	};
 
 	return {

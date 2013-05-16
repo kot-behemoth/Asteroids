@@ -33,7 +33,6 @@ function init() {
 	renderer.setSize( canvasWidth, canvasHeight );
 	renderer.setClearColor(0xffffff, 1);
 
-	// 
 	// create a point light
 	var pointLight =
 		new THREE.PointLight(0xFFFFFF);
@@ -53,11 +52,12 @@ function init() {
 	keys = new Keys();
 
 	// Calculate a random start position for the player
-	var startX = Math.round( Math.random() * (canvasWidth-5) ),
-		startY = Math.round( Math.random() * (canvasHeight-5) );
+	// [-5, 5]
+	var startX = Math.round( (Math.random()-0.5) * (10) ),
+		startZ = Math.round( (Math.random()-0.5) * (10) );
 
 	// Initialise the player
-	player = new Player(startX, startY, scene);
+	player = new Player(startX, startZ, scene);
 
 	setEventHandlers();
 }
