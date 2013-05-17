@@ -10,8 +10,28 @@ function Player(startX, startZ, scene) {
 		lastShot = 0,
 
 		geometry = new THREE.CubeGeometry( 3, 3, 3 ),
-		material = new THREE.MeshLambertMaterial( { color: 0xff00ff, wireframe: false } ),
+		material = new THREE.MeshLambertMaterial(
+			{
+				color: 0xff00ff,
+				wireframe: false
+			} ),
 		mesh = new THREE.Mesh( geometry, material );
+
+		// model
+
+		// var loader = new THREE.OBJLoader();
+		// loader.addEventListener( 'load', function ( event ) {
+		// 	var object = event.content;
+		// 	// object.traverse( function ( child ) {
+		// 	// 	if ( child instanceof THREE.Mesh ) {
+		// 	// 		child.material.map = texture;
+		// 	// 	}
+		// 	// } );
+
+		// 	// object.position.y = - 80;
+		// 	scene.add( object );
+		// });
+		// loader.load( 'assets/spaceship.obj' );
 
 	geometry.useQuaternion = true;
 	scene.add( mesh );

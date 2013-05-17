@@ -21,7 +21,7 @@ function init() {
 
 	// Create the camera
 	camera = new THREE.PerspectiveCamera( 45, canvasWidth / canvasHeight, 1, 10000 );
-	camera.position.y = 100;
+	camera.position.y = 150;
 	camera.position.z = 0.1;
 	camera.lookAt( scene.position );
 	scene.add(camera);
@@ -73,7 +73,7 @@ function createAsteroids() {
 
 	for (var i = 0; i < 10; i++) {
 		var randPos = new THREE.Vector3( (Math.random()-0.5) * (100), 0, (Math.random()-0.5) * (100));
-		var a = new Asteroid(randPos, 3, 10, null);
+		var a = new Asteroid(randPos, 2, 10, null);
 
 		asteroids[i] = a;
 		scene.add(a.model);
