@@ -167,9 +167,7 @@ function checkAsteroidCollision(asteroids, object) {
 		ar = a.boundingRadius, ap = a.model.position,
 		or = object.boundingRadius, op = object.model.position;
 
-		var rsum = ar + or;
-
-		if( rsum * rsum > op.distanceToSquared(ap) ) {
+		if( boundingCircleCollisionCheck(ar, ap, or, op) ) {
 			return i;
 		}
 	}

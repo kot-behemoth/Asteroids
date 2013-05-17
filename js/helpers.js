@@ -14,3 +14,9 @@ function getRandomArbitary (min, max) {
 function getRandomInt (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+function boundingCircleCollisionCheck(r1, p1, r2, p2) {
+	var rsum = r1 + r2;
+
+	return rsum * rsum > p1.distanceToSquared(p2);
+}
