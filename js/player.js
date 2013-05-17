@@ -13,7 +13,7 @@ function Player(scene, worldSize) {
 		// geometry = new THREE.SphereGeometry(boundingRadius, 3, 2);
 		material = new THREE.MeshLambertMaterial(
 			{
-				color: 0xF71E40,
+				color: 0xE96C31,
 				wireframe: false
 			} ),
 		mesh = new THREE.Mesh( geometry, material );

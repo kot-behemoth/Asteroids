@@ -37,7 +37,7 @@ function init() {
 	// Create the renderer
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize( canvasWidth, canvasHeight );
-	renderer.setClearColor(0x0C1A24, 1);
+	renderer.setClearColor(0x342B29, 1);
 
 	// create a point light
 	var pointLight =
