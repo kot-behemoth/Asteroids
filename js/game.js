@@ -66,6 +66,10 @@ function init() {
 	player = new Player(startX, startZ, scene);
 
 	setEventHandlers();
+
+	// Set up "hurt" flash
+	$('body').append('<div id="hurt"></div>');
+	$('#hurt').css({width: canvasWidth, height: canvasHeight});
 }
 
 function createAsteroids() {
@@ -126,7 +130,6 @@ function onResize(event) {
 */
 
 function animate() {
-
 	update( clock.getDelta() );
 	draw();
 
@@ -138,10 +141,20 @@ function update(delta) {
 	updateAsteroids(delta);
 	updateBullets(delta);
 	player.update(keys, bullets, delta);
+	checkPlayerDeath(asteroids, player);
 }
 
 function draw() {
 	renderer.render( scene, camera );
+}
+
+function checkPlayerDeath(asteroids, player) {
+	ai = checkAsteroidCollision(asteroids, player);
+
+	if(ai != -1) { // it's a hit!
+		console.log("player hit!");
+		player.die();
+	}
 }
 
 /*
@@ -152,11 +165,11 @@ function checkAsteroidCollision(asteroids, object) {
 	for (var i = asteroids.length - 1; i >= 0; i--) {
 		var a = asteroids[i],
 		ar = a.boundingRadius, ap = a.model.position,
-		br = object.boundingRadius, bp = object.model.position;
+		or = object.boundingRadius, op = object.model.position;
 
-		var rsum = ar + br;
+		var rsum = ar + or;
 
-		if( rsum * rsum > bp.distanceToSquared(ap) ) {
+		if( rsum * rsum > op.distanceToSquared(ap) ) {
 			return i;
 		}
 	}
@@ -178,7 +191,6 @@ function updateBullets(delta) {
 			bullets.splice(i, 1);
 
 			asteroids[ai].explode(scene, asteroids);
-			// TODO explode asteroid
 			scene.remove( asteroids[ai].model );
 			// we're only ever going to remove one asteroid, so there is no need for indices cache
 			asteroids.splice(ai, 1);

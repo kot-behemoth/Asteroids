@@ -40,7 +40,7 @@ function Player(startX, startZ, scene) {
 	scene.add( mesh );
 
 	var reset = function() {
-		mesh.position = scene.position;
+		mesh.position = new THREE.Vector3(0,0,0);
 		lastShot = 0;
 		rotation = 0;
 		speed = 0;
@@ -80,6 +80,12 @@ function Player(startX, startZ, scene) {
 		mesh.translateX(speed * delta);
 	};
 
+	var die = function() {
+		$('#hurt').fadeIn(75);
+		reset();
+		$('#hurt').fadeOut(350);
+	};
+
 	var shoot = function(bullets) {
 		var bullet = new Bullet(mesh.position, mesh.rotation, scene);
 
@@ -91,8 +97,10 @@ function Player(startX, startZ, scene) {
 
 	return {
 		boundingRadius: boundingRadius,
-		
+		model: mesh,
+
 		update: update,
+		die: die,
 		reset: reset,
 		draw: draw,
 		shoot: shoot

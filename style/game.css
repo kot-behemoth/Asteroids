@@ -5,3 +5,14 @@ body {
 canvas {
 	display: block;
 }
+
+#hurt {
+  background-color: red;
+  display: none;
+  left: 0;
+  opacity: 0.15;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  z-index: 1002;
+}
