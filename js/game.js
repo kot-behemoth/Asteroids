@@ -73,7 +73,7 @@ function createAsteroids() {
 
 	for (var i = 0; i < 10; i++) {
 		var randPos = new THREE.Vector3( (Math.random()-0.5) * (100), 0, (Math.random()-0.5) * (100));
-		var a = new Asteroid(randPos, 3, scene);
+		var a = new Asteroid(randPos, 3, 10, null);
 
 		asteroids[i] = a;
 		scene.add(a.model);
@@ -150,11 +150,8 @@ function checkBulletAsteroidCollision(asteroids, bullet) {
 		ar = a.radius, ap = a.model.position,
 		br = bullet.radius, bp = bullet.model.position;
 
-		var rsum = ar + br,
-			dx = ap.x - bp.x,
-			dz = ap.z - bp.z;
+		var rsum = ar + br;
 
-		// if( rsum * rsum > (dx * dx + dy * dy) ) {
 		if( rsum * rsum > bp.distanceToSquared(ap) ) {
 			return i;
 		}
@@ -176,8 +173,8 @@ function updateBullets(delta) {
 			scene.remove( b.model );
 			bullets.splice(i, 1);
 
+			asteroids[ai].explode(scene, asteroids);
 			// TODO explode asteroid
-			// asteroids[asteroidIndex].explode();
 			scene.remove( asteroids[ai].model );
 			// we're only ever going to remove one asteroid, so there is no need for indices cache
 			asteroids.splice(ai, 1);

@@ -3,9 +3,9 @@ function Player(startX, startZ, scene) {
 		z = startZ,
 		rotation = 0,
 		speed = 0,
-		rotationSpeed = 2,
+		rotationSpeed = 3,
 		dSpeed = 0.75,
-		MAX_SPEED = 15,
+		MAX_SPEED = 30,
 
 		lastShot = 0,
 
@@ -34,7 +34,7 @@ function Player(startX, startZ, scene) {
 		}
 
 		// Always slow down
-		speed -= dSpeed * 0.35;
+		// speed -= dSpeed * 0.35;
 
 		// Clamp speed
 		if(speed > MAX_SPEED) {

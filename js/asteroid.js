@@ -1,18 +1,23 @@
-function Asteroid(startPosition, startSize, scene) { 
-	var radius = 10,
+function Asteroid(position, lives, startRadius, startVelocity) { 
+	var radius = startRadius,
 		rotation =
 			new THREE.Vector3(
 				(Math.random()-0.5) * 3,
 				(Math.random()-0.5) * 3,
 				(Math.random()-0.5) * 3),
-		velocity = { x: (Math.random()-0.5) * 3, z: (Math.random()-0.5) * 3 },
+		// use the short-circuit evaluation, since startvelocity might be null
+		velocity = startVelocity ||
+			new THREE.Vector3(
+				(Math.random()-0.5) * 3,
+				0,
+				(Math.random()-0.5) * 3),
 
 		sphereMaterial = new THREE.MeshBasicMaterial( { color: 0xdddddd, wireframe: true } ),
 		sphereGeometry = new THREE.SphereGeometry(radius, 6, 6),
 		sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 
 	// sphere.useQuaternion = true;
-	sphere.position.set(startPosition.x, 0, startPosition.z);
+	sphere.position.set(position.x, 0, position.z);
 
 	// draw bounding circle
 	// var resolution = 100;
@@ -39,11 +44,27 @@ function Asteroid(startPosition, startSize, scene) {
 		// sphere.rotation.z += rotation.z * delta;
 	};
 
+	var explode = function(scene, asteroids) {
+		lives--;
+
+		if(lives > 0) {
+			a1 = new Asteroid(sphere.position, lives-1, radius/2.0);
+			a2 = new Asteroid(sphere.position, lives-1, radius/2.0);
+
+			scene.add(a1.model);
+			scene.add(a2.model);
+
+			asteroids.push(a1);
+			asteroids.push(a2);
+		}
+	};
+
 	return {
 		model: sphere,
 		radius: radius,
 
-		update: update
+		update: update,
+		explode: explode
 	};
 
 }
