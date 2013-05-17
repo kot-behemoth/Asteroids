@@ -3,7 +3,11 @@
 */
 var camera, scene, renderer, canvasWidth, canvasHeight,
 	player, keys,
-	bullets, asteroids;
+	bullets, asteroids,
+
+	worldSize = new THREE.Vector3(50, 0, 50),
+
+	STARTING_ASTEROIDS_NUM = 10;
 
 
 /*******************************************************
@@ -44,26 +48,21 @@ function init() {
 	// add to the scene
 	scene.add(pointLight);
 
-	// Create the bullets array
-	bullets = [];
-
-	// Create asteroids
-	asteroids = [];
-	createAsteroids();
-
 	// Add the canvas to the page
 	document.body.appendChild( renderer.domElement );
 
 	// Initialise keyboard controls
 	keys = new Keys();
 
-	// Calculate a random start position for the player
-	// [-5, 5]
-	var startX = Math.round( (Math.random()-0.5) * (10) ),
-		startZ = Math.round( (Math.random()-0.5) * (10) );
-
 	// Initialise the player
-	player = new Player(startX, startZ, scene);
+	player = new Player(scene, worldSize);
+
+	// Create the bullets array
+	bullets = [];
+
+	// Create asteroids
+	asteroids = [];
+	createAsteroids(player);
 
 	setEventHandlers();
 
@@ -72,16 +71,30 @@ function init() {
 	$('#hurt').css({width: canvasWidth, height: canvasHeight});
 }
 
-function createAsteroids() {
-	var spread = 100;
+function createAsteroids(player) {
+	var spread = 100,
+		defaultAsteroidRadius = 10;
 
-	for (var i = 0; i < 10; i++) {
-		var randPos = new THREE.Vector3( (Math.random()-0.5) * (100), 0, (Math.random()-0.5) * (100));
-		var a = new Asteroid(randPos, 2, 10, null);
+	for (var i = 0; i < STARTING_ASTEROIDS_NUM; i++) {
+
+		var randPos, ar, ap, pr, pp;
+
+		do{
+			randPos =
+				new THREE.Vector3(
+					getRandomArbitary(-worldSize.x, worldSize.x),
+					0,
+					getRandomArbitary(-worldSize.z, worldSize.z));
+
+			ar = defaultAsteroidRadius , ap = randPos,
+			pr = player.boundingRadius, pp = player.model.position;
+		} while(boundingCircleCollisionCheck(ar, ap, pr, pp));
+
+		var a = new Asteroid(randPos, 2, defaultAsteroidRadius, null);
 
 		asteroids[i] = a;
 		scene.add(a.model);
-	};
+	}
 }
 
 /*******************************************************
@@ -138,8 +151,8 @@ function animate() {
 }
 
 function update(delta) {
-	updateAsteroids(delta);
-	updateBullets(delta);
+	updateAsteroids(worldSize, delta);
+	updateBullets(worldSize, delta);
 	player.update(keys, bullets, delta);
 	checkPlayerDeath(asteroids, player);
 }
@@ -175,11 +188,11 @@ function checkAsteroidCollision(asteroids, object) {
 	return -1;
 }
 
-function updateBullets(delta) {
+function updateBullets(worldSize, delta) {
 	for (var i = bullets.length - 1; i >= 0; i--) {
 		var b = bullets[i];
 
-		b.update(delta);
+		b.update(worldSize, delta);
 
 		ai = checkAsteroidCollision(asteroids, b);
 
@@ -204,10 +217,10 @@ function updateBullets(delta) {
 	}
 }
 
-function updateAsteroids(delta) {
+function updateAsteroids(worldSize, delta) {
 	for (var i = asteroids.length - 1; i >= 0; i--) {
 		var a = asteroids[i], p = a.model.position;
 
-		a.update(delta);
+		a.update(worldSize, delta);
 	}
 }

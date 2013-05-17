@@ -1,7 +1,5 @@
-function Player(startX, startZ, scene) { 
-	var x = startX,
-		z = startZ,
-		rotation = 0,
+function Player(scene, worldSize) {
+	var rotation = 0,
 		speed = 0,
 		rotationSpeed = 3,
 		dSpeed = 0.75,
@@ -44,7 +42,7 @@ function Player(startX, startZ, scene) {
 		lastShot = 0;
 		rotation = 0;
 		speed = 0;
-	}
+	};
 
 	var update = function(keys, bullets, delta) {
 		if(keys.up) {
@@ -78,6 +76,20 @@ function Player(startX, startZ, scene) {
 
 		// Move
 		mesh.translateX(speed * delta);
+
+		// Wrap movement in x
+		if(mesh.position.x > worldSize.x) {
+			mesh.position.x = -worldSize.x;
+		} else if(mesh.position.x < -worldSize.x) {
+			mesh.position.x = worldSize.x;
+		}
+
+		// Wrap movement in z
+		if(mesh.position.z > worldSize.z) {
+			mesh.position.z = -worldSize.z;
+		} else if(mesh.position.z < -worldSize.z) {
+			mesh.position.z = worldSize.z;
+		}
 	};
 
 	var die = function() {

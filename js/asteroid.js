@@ -36,10 +36,26 @@ function Asteroid(position, lives, startRadius, startVelocity) {
 
 	sphere.position.set(position.x, 0, position.z);
 
-	var update = function(delta) {
+	var update = function(worldSize, delta) {
+		// Move
 		sphere.position.x += velocity.x * delta;
 		sphere.position.z += velocity.z * delta;
 
+		// Wrap movement in x
+		if(sphere.position.x > worldSize.x) {
+			sphere.position.x = -worldSize.x;
+		} else if(sphere.position.x < -worldSize.x) {
+			sphere.position.x = worldSize.x;
+		}
+
+		// Wrap movement in z
+		if(sphere.position.z > worldSize.z) {
+			sphere.position.z = -worldSize.z;
+		} else if(sphere.position.z < -worldSize.z) {
+			sphere.position.z = worldSize.z;
+		}
+
+		// Rotate
 		sphere.rotation.x += rotation.x * delta;
 		sphere.rotation.y += rotation.y * delta;
 	};
