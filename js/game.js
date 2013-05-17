@@ -238,13 +238,11 @@ function updateBullets(worldSize, delta) {
 			asteroids.splice(ai, 1);
 
 			player.shotSuccessful();
-			// continue;
 		}
 
 		if( b.isDead() ) {
 			scene.remove( b.model );
 			bullets.splice(i, 1);
-			// continue;
 		}
 	}
 }

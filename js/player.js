@@ -11,11 +11,11 @@ function Player(scene, worldSize) {
 
 		lastShot = 0,
 
-		geometry = new THREE.CubeGeometry( boundingRadius, boundingRadius, boundingRadius ),
-		material = new THREE.MeshLambertMaterial(
+		geometry = new THREE.SphereGeometry(boundingRadius, 3, 4);
+		material = new THREE.MeshBasicMaterial(
 			{
 				color: 0xE96C31,
-				wireframe: false
+				wireframe: true
 			} ),
 		mesh = new THREE.Mesh( geometry, material );
 

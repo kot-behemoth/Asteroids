@@ -18,10 +18,6 @@ function Asteroid(position, lives, startRadius, startVelocity) {
 				color: 0xE1CBA8,
 				wireframe: true
 			} ),
-		// segmentsWidth — number of horizontal segments. Minimum value is 3, and the default is 8.
-		//segmentsHeight — number of vertical segments. Minimum value is 2, and the default is 6.
-		// geometry = new THREE.SphereGeometry(radius, 3+lives*2, 2+lives*2);
-		// geometry = new THREE.IcosahedronGeometry(radius, 1);
 		geometry = new THREE.OctahedronGeometry(radius, 1);
 		geometry.dynamic = true;
 
