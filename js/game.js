@@ -26,17 +26,18 @@ function init() {
 	// Create the camera
 	camera = new THREE.PerspectiveCamera( 45, canvasWidth / canvasHeight, 1, 10000 );
 	camera.position.y = 150;
-	camera.position.z = 0.1;
+	camera.position.z = 10;
 	camera.lookAt( scene.position );
 	scene.add(camera);
 
+	// 3D axes for debugging
 	axes = new THREE.AxisHelper( 10 );
 	scene.add( axes );
 
 	// Create the renderer
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize( canvasWidth, canvasHeight );
-	renderer.setClearColor(0xffffff, 1);
+	renderer.setClearColor(0x0C1A24, 1);
 
 	// create a point light
 	var pointLight =

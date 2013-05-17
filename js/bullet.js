@@ -1,7 +1,11 @@
 function Bullet(startPosition, startRotation, scene) {
 	var radius = 1,
-		sphereMaterial = new THREE.MeshBasicMaterial( { color: 0x333333 } ),
-		sphereGeometry = new THREE.SphereGeometry(radius, 6, 6),
+		sphereMaterial = new THREE.MeshBasicMaterial(
+			{
+				color: 0xF0A438
+			} ),
+		// sphereGeometry = new THREE.SphereGeometry(radius, 6, 6),
+		sphereGeometry = new THREE.SphereGeometry(radius, 3, 2);
 		sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 
 	var speed = 40,

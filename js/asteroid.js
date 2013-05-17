@@ -15,7 +15,7 @@ function Asteroid(position, lives, startRadius, startVelocity) {
 
 		material = new THREE.MeshBasicMaterial(
 			{
-				color: 0xdddddd,
+				color: 0xE1CBA8,
 				wireframe: true
 			} ),
 		// segmentsWidth — number of horizontal segments. Minimum value is 3, and the default is 8.
