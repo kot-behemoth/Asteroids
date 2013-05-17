@@ -26,13 +26,13 @@ function init() {
 	// Create the camera
 	camera = new THREE.PerspectiveCamera( 45, canvasWidth / canvasHeight, 1, 10000 );
 	camera.position.y = 150;
-	camera.position.z = 10;
+	camera.position.z = 1;
 	camera.lookAt( scene.position );
 	scene.add(camera);
 
 	// 3D axes for debugging
-	axes = new THREE.AxisHelper( 10 );
-	scene.add( axes );
+	// axes = new THREE.AxisHelper( 10 );
+	// scene.add( axes );
 
 	// Create the renderer
 	renderer = new THREE.WebGLRenderer();
@@ -40,14 +40,12 @@ function init() {
 	renderer.setClearColor(0x342B29, 1);
 
 	// create a point light
-	var pointLight =
-		new THREE.PointLight(0xFFFFFF);
+	var dirLight =
+		new THREE.DirectionalLight(0xFFFFFF);
 	// set its position
-	pointLight.position.x = 5;
-	pointLight.position.y = 50;
-	pointLight.position.z = 1;
+	dirLight.position = new THREE.Vector3( 0, 1, 0).normalize();
 	// add to the scene
-	scene.add(pointLight);
+	scene.add(dirLight);
 
 	// Add the canvas to the page
 	document.body.appendChild( renderer.domElement );
@@ -57,6 +55,9 @@ function init() {
 
 	// Initialise the player
 	player = new Player(scene, worldSize);
+
+	// Add borders
+	createBorders(worldSize);
 
 	// Create the bullets array
 	bullets = [];
@@ -69,7 +70,10 @@ function init() {
 
 	// Set up "hurt" flash
 	$('body').append('<div id="hurt"></div>');
-	$('#hurt').css({width: canvasWidth, height: canvasHeight});
+	$('#hurt').css( { width: canvasWidth, height: canvasHeight } );
+
+	// Add the score HUD
+	$('body').append('<div id="hud"><p>Score: <span id="score">0</span></p></div>');
 }
 
 function createAsteroids(player) {
@@ -96,6 +100,27 @@ function createAsteroids(player) {
 		asteroids[i] = a;
 		scene.add(a.model);
 	}
+}
+
+function createBorders(box) {
+	var bx = box.x,
+		bz = box.z;
+
+	var material = new THREE.LineBasicMaterial(
+		{
+			color: 0xF5F787
+		});
+
+	var geometry = new THREE.Geometry();
+	geometry.vertices.push(new THREE.Vector3(-bx, 0, -bz));
+	geometry.vertices.push(new THREE.Vector3(bx, 0, -bz));
+	geometry.vertices.push(new THREE.Vector3(bx, 0, bz));
+	geometry.vertices.push(new THREE.Vector3(-bx, 0, bz));
+	geometry.vertices.push(new THREE.Vector3(-bx, 0, -bz));
+
+	var line = new THREE.Line(geometry, material);
+
+	scene.add(line);
 }
 
 /*******************************************************
@@ -168,6 +193,11 @@ function checkPlayerDeath(asteroids, player) {
 	if(ai != -1) { // it's a hit!
 		console.log("player hit!");
 		player.die();
+
+		// Explode the asteroid
+		asteroids[ai].explode(scene, asteroids);
+		scene.remove( asteroids[ai].model );
+		asteroids.splice(ai, 1);
 	}
 }
 
@@ -207,6 +237,7 @@ function updateBullets(worldSize, delta) {
 			// we're only ever going to remove one asteroid, so there is no need for indices cache
 			asteroids.splice(ai, 1);
 
+			player.shotSuccessful();
 			// continue;
 		}
 

@@ -17,3 +17,11 @@ canvas {
   z-index: 1002;
 }
 
+#hud {
+  bottom: 10px;
+  position: absolute;
+  right: 10px;
+  z-index: 100;
+  color: #F5F787;
+  font-family: Helvetica, Arial;
+}

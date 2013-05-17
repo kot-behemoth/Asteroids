@@ -5,27 +5,19 @@ function Player(scene, worldSize) {
 		dSpeed = 0.75,
 		MAX_SPEED = 30,
 
+		score = 0,
+
 		boundingRadius = 3,
 
 		lastShot = 0,
 
 		geometry = new THREE.CubeGeometry( boundingRadius, boundingRadius, boundingRadius ),
-		// geometry = new THREE.SphereGeometry(boundingRadius, 3, 2);
 		material = new THREE.MeshLambertMaterial(
 			{
 				color: 0xE96C31,
 				wireframe: false
 			} ),
-		// mesh = new THREE.Mesh( geometry, material );
-
-		// model
-		loader = new THREE.JSONLoader();
-		loader.load( "assets/spaceship.js", function( geometry ) {
-			mesh = new THREE.Mesh( geometry, new THREE.MeshNormalMaterial() );
-			mesh.scale.set( 1, 1, 1 );
-			mesh.position.z = 0;
-			mesh.position.x = 0;
-		} );
+		mesh = new THREE.Mesh( geometry, material );
 
 	geometry.useQuaternion = true;
 	scene.add( mesh );
@@ -35,6 +27,13 @@ function Player(scene, worldSize) {
 		lastShot = 0;
 		rotation = 0;
 		speed = 0;
+		score = 0;
+		$('#score').html(score);
+	};
+
+	var shotSuccessful = function() {
+		score++;
+		$('#score').html(score);
 	};
 
 	var update = function(keys, bullets, delta) {
@@ -106,6 +105,7 @@ function Player(scene, worldSize) {
 
 		update: update,
 		die: die,
+		shotSuccessful: shotSuccessful,
 		reset: reset,
 		draw: draw,
 		shoot: shoot
