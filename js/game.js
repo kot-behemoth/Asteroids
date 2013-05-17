@@ -144,11 +144,15 @@ function draw() {
 	renderer.render( scene, camera );
 }
 
-function checkBulletAsteroidCollision(asteroids, bullet) {
+/*
+	Checks for collisions of any object against all of the present astroids.
+	Returns the index of the colliding asteroid and -1 if there is no collision
+*/
+function checkAsteroidCollision(asteroids, object) {
 	for (var i = asteroids.length - 1; i >= 0; i--) {
 		var a = asteroids[i],
-		ar = a.radius, ap = a.model.position,
-		br = bullet.radius, bp = bullet.model.position;
+		ar = a.boundingRadius, ap = a.model.position,
+		br = object.boundingRadius, bp = object.model.position;
 
 		var rsum = ar + br;
 
@@ -166,7 +170,7 @@ function updateBullets(delta) {
 
 		b.update(delta);
 
-		ai = checkBulletAsteroidCollision(asteroids, b);
+		ai = checkAsteroidCollision(asteroids, b);
 
 		if(ai != -1) { // it's a hit!
 			console.log("hit!");

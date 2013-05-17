@@ -71,6 +71,7 @@ function Asteroid(position, lives, startRadius, startVelocity) {
 	return {
 		model: sphere,
 		radius: radius,
+		boundingRadius: radius,
 
 		update: update,
 		explode: explode

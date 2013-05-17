@@ -25,6 +25,7 @@ function Bullet(startPosition, startRotation, scene) {
 	return {
 		model: sphere,
 		radius: radius,
+		boundingRadius: radius,
 
 		update: update,
 		isDead: isDead
