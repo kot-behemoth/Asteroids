@@ -9,7 +9,7 @@ function Player(startX, startZ, scene) {
 
 		lastShot = 0,
 
-		geometry = new THREE.CubeGeometry( 2, 2, 2 ),
+		geometry = new THREE.CubeGeometry( 3, 3, 3 ),
 		material = new THREE.MeshLambertMaterial( { color: 0xff00ff, wireframe: false } ),
 		mesh = new THREE.Mesh( geometry, material );
 
@@ -57,7 +57,7 @@ function Player(startX, startZ, scene) {
 		bullets.push(bullet);
 
 		lastShot = Date.now();
-	}
+	};
 
 	return {
 		update: update,
@@ -65,4 +65,4 @@ function Player(startX, startZ, scene) {
 		shoot: shoot
 	};
 
-};
+}
