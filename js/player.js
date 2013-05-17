@@ -16,24 +16,16 @@ function Player(scene, worldSize) {
 				color: 0xE96C31,
 				wireframe: false
 			} ),
-		mesh = new THREE.Mesh( geometry, material );
+		// mesh = new THREE.Mesh( geometry, material );
 
 		// model
-
-		// var loader = new THREE.OBJLoader();
-		// loader.addEventListener( 'load', function ( event ) {
-		// 	var object = event.content;
-		// 	// object.traverse( function ( child ) {
-		// 	// 	if ( child instanceof THREE.Mesh ) {
-		// 	// 		child.material.map = texture;
-		// 	// 	}
-		// 	// } );
-
-		// 	object.position = new THREE.Vector3(0,0,0);
-		// 	scene.add( object );
-		// });
-		// // loader.load( 'assets/spaceship.obj' );
-		// loader.load( 'http://raw.github.com/kot-behemoth/Asteroids/master/assets/spaceship.obj' );
+		loader = new THREE.JSONLoader();
+		loader.load( "assets/spaceship.js", function( geometry ) {
+			mesh = new THREE.Mesh( geometry, new THREE.MeshNormalMaterial() );
+			mesh.scale.set( 1, 1, 1 );
+			mesh.position.z = 0;
+			mesh.position.x = 0;
+		} );
 
 	geometry.useQuaternion = true;
 	scene.add( mesh );
